@@ -1,13 +1,20 @@
 import { useState } from 'react';
 import './App.css';
+import helmet from "./img/helmet-1.png"
+import potion from "./img/potion-1.png"
+import ring from "./img/ring-1.png"
+import scroll from "./img/scroll-1.png"
+import shield from "./img/shield-1.png"
+import sword from "./img/sword-1.png"
+import cover from "./img/cover.png"
 
 const imagesArray = [ 
-  { "src" : "/img/helmet-1.png", matched: false },
-  { "src" : "/img/potion-1.png", matched: false },
-  { "src" : "/img/ring-1.png", matched: false },
-  { "src" : "/img/scroll-1.png", matched: false },
-  { "src" : "/img/shield-1.png", matched: false },
-  { "src" : "/img/sword-1.png", matched: false }
+  { item: helmet , matched: false },
+  { item: potion , matched: false },
+  { item: ring , matched: false },
+  { item: scroll , matched: false },
+  { item: shield , matched: false },
+  { item: sword , matched: false }
 ] 
 
 
@@ -22,20 +29,18 @@ function App() {
     console.log(shuffledCards)
     setCards(shuffledCards);
     setTurns(0)
-    
-   
   }
-  
+  console.log(cards,turns)
   return (
     <div className="App">
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
       <div className='card-grid'>
-        {cards.map((item) => (
-          <div className='card' key={item.id}>
+        {cards.map(card  => (
+          <div className='card' key={card.id}>
             <div>
-              <img src={item.src} alt='card front' className='front'></img>
-              <img src='/img/cover.png' alt= 'cover' className='back'></img>
+              <img src={card.item} alt='card front' className='front'></img>
+              <img src={cover} alt= 'cover' className='back'></img>
             </div>
           </div>
         ))}
