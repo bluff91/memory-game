@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
+import SingleCard from './components/SingleCard';
+
+// image imports
 import helmet from "./img/helmet-1.png"
 import potion from "./img/potion-1.png"
 import ring from "./img/ring-1.png"
 import scroll from "./img/scroll-1.png"
 import shield from "./img/shield-1.png"
 import sword from "./img/sword-1.png"
-import cover from "./img/cover.png"
+
 
 const imagesArray = [ 
   { item: helmet , matched: false },
@@ -21,7 +24,9 @@ const imagesArray = [
 function App() {
   const [cards, setCards] = useState([])
   const [turns, setTurns] = useState(0)
-
+  const [choiceOne, setChoiceOne] = useState(null)
+  const [choiceTwo, setChoiceTwo] = useState(null)
+  
   const shuffleCards = () => {
     const shuffledCards = [...imagesArray, ...imagesArray]
                           .sort(() => Math.random() - 0.5)
@@ -30,19 +35,37 @@ function App() {
     setCards(shuffledCards);
     setTurns(0)
   }
-  console.log(cards,turns)
+
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.item === choiceTwo.item) {
+        console.log('they match')
+        resetTurn()
+      } else {
+        console.log('you missed')
+        resetTurn()
+      }
+    }
+  }, [choiceOne, choiceTwo])
+
+  // handles the player's choice
+  function handleChoice(card) {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+  }
+
+  function resetTurn() {
+    setChoiceOne(null)
+    setChoiceTwo(null)
+    setTurns(prevState => prevState + 1)
+  }
+  
   return (
     <div className="App">
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
       <div className='card-grid'>
         {cards.map(card  => (
-          <div className='card' key={card.id}>
-            <div>
-              <img src={card.item} alt='card front' className='front'></img>
-              <img src={cover} alt= 'cover' className='back'></img>
-            </div>
-          </div>
+          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
         ))}
       </div>
       
